@@ -1,0 +1,51 @@
+{
+  "name": "minesword-forge",
+  "version": "1.0.0",
+  "description": "MineSword Forge — HTML Game Maker (Electron desktop build)",
+  "main": "main.js",
+  "author": "MineSword Forge",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win --x64 --ia32",
+    "dist:x64": "electron-builder --win --x64",
+    "dist:ia32": "electron-builder --win --ia32"
+  },
+  "devDependencies": {
+    "electron": "22.3.27",
+    "electron-builder": "24.13.3"
+  },
+  "build": {
+    "appId": "com.minesword.forge",
+    "productName": "MineSword Forge",
+    "copyright": "MineSword Forge",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "app/**/*",
+      "build/icon.ico"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        { "target": "nsis", "arch": ["x64", "ia32"] },
+        { "target": "portable", "arch": ["x64", "ia32"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "MineSwordForge-Setup-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "MineSwordForge-Portable-${arch}.${ext}"
+    }
+  }
+}
