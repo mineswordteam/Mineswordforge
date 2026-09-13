@@ -2,12 +2,16 @@ name: Build Windows EXE
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   workflow_dispatch: {}
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,11 +24,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Windows installers (x64 + ia32)
+      - name: Build Windows installers
         run: npm run dist -- --publish never
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: MineSwordForge-Windows-Builds
-          path: release/*.exe
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v1.0.0-${{ github.run_number }}" release/*.exe --title "MineSword Forge Windows ${{ github.run_number }}" --notes "MineSword Forge Windows installers — x64 and ia32"
